@@ -15,6 +15,13 @@ namespace PokemonPreview.Repository
         {
             _context = context;
         }
+
+        public bool DeleteOwner(Owner owner)
+        {
+            _context.Remove(owner);
+            return IsSave();
+        }
+
         public Owner GetOwner(int ownerId)
         {
             return _context.Owners
@@ -47,6 +54,18 @@ namespace PokemonPreview.Repository
         public bool IsOwnerExist(int ownerId)
         {
             return _context.Owners.Any(x => x.Id == ownerId);
+        }
+
+        public bool IsSave()
+        {
+            var saveCount = _context.SaveChanges();
+            return saveCount > 0 ? true : false;
+        }
+
+        public bool IsUpdateOwner(Owner owner)
+        {
+            _context.Update(owner);
+            return IsSave();
         }
     }
 }

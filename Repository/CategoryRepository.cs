@@ -16,6 +16,13 @@ namespace PokemonPreview.Repository
         {
             _context = context;
         }
+
+        public bool DeleteCategory(Category category)
+        {
+           _context.Remove(category);
+           return IsSave();
+        }
+
         public ICollection<Category> GetCategories()
         {
             return _context.Categories.ToList();
@@ -44,6 +51,18 @@ namespace PokemonPreview.Repository
         public bool IsCategoryExist(int categoryId)
         {
             return _context.Categories.Any(x => x.Id == categoryId);
+        }
+
+        public bool IsCategoryUpdate(Category category)
+        {
+            _context.Update(category);
+            return IsSave();
+        }
+
+        public bool IsSave()
+        {
+            var save = _context.SaveChanges();
+            return save > 0 ? true : false;
         }
     }
 }

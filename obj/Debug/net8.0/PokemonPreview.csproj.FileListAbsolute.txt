@@ -162,3 +162,4 @@ D:\.NET_Projects\PokemonPreview\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.
 D:\.NET_Projects\PokemonPreview\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
 D:\.NET_Projects\PokemonPreview\bin\Debug\net8.0\AutoMapper.dll
 D:\.NET_Projects\PokemonPreview\bin\Debug\net8.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+D:\.NET_Projects\PokemonPreview\obj\Debug\net8.0\PokemonPreview.sourcelink.json

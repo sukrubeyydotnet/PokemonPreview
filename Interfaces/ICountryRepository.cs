@@ -9,6 +9,9 @@ namespace PokemonPreview.Interfaces
         Country GetCountry(string countryName);
         Country GetCountryByOwnerId(int ownerId);
         ICollection<Owner> GetOwnersByCountryId(int countryId);
+        bool IsUpdateCountry(Country country);
         bool IsCountryExist(int countryId);
+        bool IsSave();
+        bool DeleteCountry(Country country);
     }
 }

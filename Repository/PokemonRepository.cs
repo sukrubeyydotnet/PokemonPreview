@@ -16,6 +16,12 @@ namespace PokemonPreview.Repository
             _context = context;
         }
 
+        public bool DeletePokemon(Pokemon pokemon)
+        {
+            _context.Remove(pokemon);
+            return IsSaved();
+        }
+
         public Pokemon GetPokeman(int id)
         {
             var pokemon = _context.Pokemon.Where(x => x.Id == id)
@@ -79,6 +85,12 @@ namespace PokemonPreview.Repository
 
             _context.Add(pokemon);
 
+            return IsSaved();
+        }
+
+        public bool UpdatePokemon(int ownerId, int categoryId, Pokemon pokemon)
+        {
+            _context.Update(pokemon);
             return IsSaved();
         }
     }

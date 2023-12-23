@@ -13,6 +13,8 @@ namespace PokemonPreview.Interfaces
         Category GetCategory(string categoryName);
         ICollection<Pokemon> GetPokemensByCategoryId(int categoryId);
         bool IsCategoryExist(int categoryId);
-
+        bool IsCategoryUpdate(Category category);
+        bool IsSave();
+        bool DeleteCategory(Category category);
     }
 }

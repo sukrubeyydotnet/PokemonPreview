@@ -16,6 +16,13 @@ namespace PokemonPreview.Repository
         {
             _context = context;
         }
+
+        public bool DeleteCountry(Country country)
+        {
+            _context.Remove(country);
+            return IsSave();
+        }
+
         public ICollection<Country> GetCountries()
         {
             return _context.Countries.ToList();
@@ -59,6 +66,18 @@ namespace PokemonPreview.Repository
         public bool IsCountryExist(int countryId)
         {
             return _context.Countries.Any(x => x.Id == countryId);
+        }
+
+        public bool IsSave()
+        {
+            var saveCount = _context.SaveChanges();
+            return saveCount > 0 ? true : false;
+        }
+
+        public bool IsUpdateCountry(Country country)
+        {
+            _context.Update(country);
+            return IsSave();
         }
     }
 }

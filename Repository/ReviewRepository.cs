@@ -52,5 +52,23 @@ namespace PokemonPreview.Repository
             var saved = _context.SaveChanges();
             return saved > 0 ? true : false;
         }
+
+        public bool UpdateReview(Review review)
+        {
+            _context.Update(review);
+            return IsSaved();
+        }
+
+        public bool DeleteReview(Review review)
+        {
+            _context.Remove(review);
+            return IsSaved();
+        }
+
+        public bool DeleteReviews(List<Review> reviews)
+        {
+            _context.RemoveRange(reviews);
+            return IsSaved();
+        }
     }
 }

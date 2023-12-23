@@ -14,6 +14,8 @@ namespace PokemonPreview.Interfaces
         decimal GetPokemonRating(int pokeId);
         bool IsPokemonExist(int pokeId);
         bool PokemonCreate(int ownerId, int categoryId, Pokemon pokemon);
+        bool UpdatePokemon(int ownerId, int categoryId, Pokemon pokemon);
         bool IsSaved();
+        bool DeletePokemon(Pokemon pokemon);
     }
 }

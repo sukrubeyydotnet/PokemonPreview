@@ -13,6 +13,8 @@ namespace PokemonPreview.Interfaces
         ICollection<Review> GetReviewsByReviewer(int reviewerId);
         bool IsReviewerExist(int reviewerId);
         bool CreateReviewer(Reviewer reviewer);
+        bool UpdateReviewer(Reviewer reviewer);
+        bool DeleteReviewer(Reviewer reviewer);
         bool IsSaved();
     }
 }

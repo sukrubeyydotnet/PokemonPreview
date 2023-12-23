@@ -27,10 +27,10 @@ namespace PokemonPreview.Controllers
         }
 
         [HttpGet]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<Review>))]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<ReviewDto>))]
         public IActionResult GetReviews()
         {
-            var pokemons = _reviewRepository.GetReviews();
+            var pokemons = _mapper.Map<IEnumerable<ReviewDto>>(_reviewRepository.GetReviews());
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -39,13 +39,13 @@ namespace PokemonPreview.Controllers
         }
 
         [HttpGet("reviewId")]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<Owner>))]
+        [ProducesResponseType(200, Type = typeof(ReviewDto))]
         public IActionResult GetReview(int reviewId)
         {
             if (!_reviewRepository.IsReviewExist(reviewId))
                 return NotFound();
 
-            var review = _reviewRepository.GetReview(reviewId);
+            var review = _mapper.Map<ReviewDto>(_reviewRepository.GetReview(reviewId));
 
             if (!ModelState.IsValid)
                 return BadRequest();
@@ -55,10 +55,10 @@ namespace PokemonPreview.Controllers
 
 
         [HttpGet("reviews/{pokeId}")]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<Review>))]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<ReviewDto>))]
         public IActionResult GetReviewByPokemonId(int pokeId)
         {
-            var review = _reviewRepository.GetReviewsOfPokemonId(pokeId);
+            var review = _mapper.Map<IEnumerable<ReviewDto>>(_reviewRepository.GetReviewsOfPokemonId(pokeId));
 
             if (!ModelState.IsValid)
                 return BadRequest();
@@ -97,6 +97,79 @@ namespace PokemonPreview.Controllers
                 return StatusCode(500, ModelState);
             }
             return Ok("Review Created Successfully");
+        }
+
+        [HttpPut("{reviewId}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        public IActionResult UpdateReview(int reviewId, [FromBody] ReviewDto updateReview)
+        {
+            if (updateReview is null)
+                return BadRequest(ModelState);
+
+            if (reviewId != updateReview.Id)
+                return BadRequest(ModelState);
+
+            if (!_reviewRepository.IsReviewExist(reviewId))
+                return NotFound();
+
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            var reviewMap = _mapper.Map<Review>(updateReview);
+
+            if (!_reviewRepository.UpdateReview(reviewMap))
+            {
+                ModelState.AddModelError("", "Something went wrong");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok("successfully");
+        }
+
+        [HttpDelete("{reviewId}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult DeleteReview(int reviewId)
+        {
+            if (!_reviewRepository.IsReviewExist(reviewId))
+            {
+                return NotFound();
+            }
+
+            var reviewToDelete = _reviewRepository.GetReview(reviewId);
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if (!_reviewRepository.DeleteReview(reviewToDelete))
+            {
+                ModelState.AddModelError("", "Something went wrong deleting owner");
+            }
+
+            return NoContent();
+        }
+        [HttpDelete("/DeleteReviewsByReviewer/{reviewerId}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult DeleteReviewsByReviewer(int reviewerId)
+        {
+            if (!_reviewerRepository.IsReviewerExist(reviewerId))
+                return NotFound();
+
+            var reviewsToDelete = _reviewerRepository.GetReviewsByReviewer(reviewerId).ToList();
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            if (!_reviewRepository.DeleteReviews(reviewsToDelete))
+            {
+                ModelState.AddModelError("", "error deleting reviews");
+                return StatusCode(500, ModelState);
+            }
+            return NoContent();
         }
     }
 }

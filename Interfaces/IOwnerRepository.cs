@@ -13,5 +13,8 @@ namespace PokemonPreview.Interfaces
         ICollection<Owner> GetOwnerOfPokemon(int pokeId);
         ICollection<Pokemon> GetPokemonsByOwnerId(int ownerId);
         bool IsOwnerExist(int ownerId);
+        bool IsSave();
+        bool IsUpdateOwner(Owner owner);
+        bool DeleteOwner(Owner owner);
     }
 }
